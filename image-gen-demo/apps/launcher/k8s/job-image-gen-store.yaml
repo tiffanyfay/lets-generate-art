@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: image-gen-store-$RANDOM_STRING
+  namespace: gen
+spec:
+  template:
+    metadata:
+      annotations:
+        prompt: $PROMPT
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: image-gen-store
+        image: $IMAGE_GEN_STORE_IMAGE
+        args:
+        - $PROMPT
+        volumeMounts:
+        - name: secret-volume
+          mountPath: /etc/secret-volume
+      volumes:
+      - name: secret-volume
+        secret:
+          secretName: open-api-key
