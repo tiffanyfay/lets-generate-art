@@ -11,4 +11,5 @@ rules:
   verbs:
     - create
     - get
+    - list
     - patch
