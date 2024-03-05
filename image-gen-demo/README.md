@@ -59,11 +59,11 @@ This application takes in prompts for OpenAI and launches jobs for each prompt.
 ## Things to do
 TODO: Create gen namespace 
 
-1. Readme for database
+1. [Database instructions](apps/image-database/README.md)
 
-2. Readme for image-gen-store
+2. [Image generator and store instructions](apps/image-gen-store/README.md)
 
-3. Readme for launcher
+3. [Launcher instructions](apps/launcher/README.md)
 
 
 ## Resources
@@ -74,8 +74,8 @@ https://tanzu.vmware.com/developer/blog/beyond-cluster-admin/
 
 
 ## TODO
-[ ] Use DOCR
-[ ] Display prompts and URLs as images on webpage
-[ ] Create service account vs using default one
-[ ] Have a webpage to put prompts into vs running a pod
-[ ] Add image creation dates so the database can drop anything that has a timestamp before a current subset -- e.g. OpenAI Dall-E only stores images for an hour, so after this, the URLs don't work.
+- [ ] Use DOCR
+- [ ] Display prompts and URLs as images on webpage
+- [ ] Create service account vs using default one
+- [ ] Have a webpage to put prompts into vs running a pod
+- [ ] Add image creation dates so the database can drop anything that has a timestamp before a current subset -- e.g. OpenAI Dall-E only stores images for an hour, so after this, the URLs don't work.

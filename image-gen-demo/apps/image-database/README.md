@@ -104,6 +104,8 @@ For testing purposes, if you don't feel like waiting on the LoadBalancer (it's a
 kubectl -n gen port-forward deployment/image-database 8080:8080
 ```
 
+[Next steps ->](../image-gen-store/README.md)
+
 ## Resources
 Spring Data
 - https://spring.io/guides/gs/accessing-data-jpa

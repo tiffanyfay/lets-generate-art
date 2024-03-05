@@ -28,3 +28,5 @@ Create a secret with your key:
 ```console
 kubectl apply -f k8s/secret-open-api-key.yaml
 ```
+
+[Next steps ->](../launcher/README.md)
