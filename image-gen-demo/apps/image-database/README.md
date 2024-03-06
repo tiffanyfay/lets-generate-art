@@ -2,7 +2,6 @@
 
 Table of Contents
 - [Image Database](#image-database)
-  - [Prerequisites](#prerequisites)
   - [Building image-database app](#building-image-database-app)
     - [Cloud Native Buildpacks](#cloud-native-buildpacks)
     - [JIB](#jib)
@@ -14,15 +13,8 @@ Table of Contents
   - [Resources](#resources)
 
 
-## Prerequisites
-CLIs
-- jq
-- doctl
-- docker
-- envsubst
-
 ## Building image-database app
-First, ensure you're logged into the Container Registry you expect to be in:
+First, ensure you're logged into the Container Registry you expect to be in.
 
 ### Cloud Native Buildpacks
 Build and push image:
@@ -73,7 +65,13 @@ export POSTGRES_PASSWORD=$(doctl database get $DO_DATABASE_ID -o json | jq '.[0]
 ### [Optional] Testing
 Test your containerized app works:
 ```console
-docker run -p 8080:8080 -e POSTGRES_HOST=$POSTGRES_HOST -e POSTGRES_PORT=25060 -e POSTGRES_DATABASE=defaultdb -e POSTGRES_USERNAME=doadmin -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD $IMAGE_DATABASE_IMAGE
+docker run -p 8080:8080 \
+  -e POSTGRES_HOST=$POSTGRES_HOST \
+  -e POSTGRES_PORT=$POSTGRES_PORT \
+  -e POSTGRES_DATABASE=$POSTGRES_DATABASE \
+  -e POSTGRES_USERNAME=$POSTGRES_USERNAME \
+  -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
+  $IMAGE_DATABASE_IMAGE
 ```
 
 ### Push image to your container registry
@@ -104,7 +102,7 @@ For testing purposes, if you don't feel like waiting on the LoadBalancer (it's a
 kubectl -n gen port-forward deployment/image-database 8080:8080
 ```
 
-[Next steps ->](../image-gen-store/README.md)
+[**Next steps ->**](../image-gen-store/README.md)
 
 ## Resources
 Spring Data

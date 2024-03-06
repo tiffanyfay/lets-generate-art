@@ -4,10 +4,12 @@
 - [Launcher](#launcher)
 - [Build and push image](#build-and-push-image)
   - [RBAC](#rbac)
+  - [Resources](#resources)
+    - [RBAC](#rbac-1)
 
 
 # Build and push image
-```console
+```shell
 # Change image to your image name depending on your registry
 export IMAGE_GEN_STORE_LAUNCHER_IMAGE=<image-gen-store-launcher:v1>
 docker build -t $IMAGE_GEN_STORE_LAUNCHER_IMAGE .
@@ -16,6 +18,7 @@ docker push $IMAGE_GEN_STORE_LAUNCHER_IMAGE
 
 ## RBAC
 First we need RBAC permissions to be able to create jobs so we will create a role and rolebinding.
+TODO: explain what these do, and also show how we can't get jobs or services prior
 
 TODO: create a service account too vs using the default
 
@@ -38,7 +41,7 @@ kubectl -n gen run -it tester --rm --image=cgr.dev/chainguard/kubectl -- get job
 ```
 
 Run the app:
-```console
+```shell
 kubectl -n gen run image-gen-store-launcher \
     --image=$IMAGE_GEN_STORE_LAUNCHER_IMAGE \
     --restart=OnFailure \
@@ -55,3 +58,7 @@ Check your annotations happened:
 ```console
 kubectl -n get jobs --output=jsonpath='{range .items[*]}{.metadata.name}: {.metadata.annotations}{"\n"}{end}'
 ```
+
+## Resources
+### RBAC
+[Talk I gave](https://www.youtube.com/watch?v=mD-Dng2QbQ0&ab_channel=DevoxxFR)
