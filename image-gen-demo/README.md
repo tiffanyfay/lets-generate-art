@@ -86,3 +86,4 @@ This application takes in prompts for OpenAI and launches jobs for each prompt.
 - [ ] Create service account vs using default one
 - [ ] Have a webpage to put prompts into vs running a pod
 - [ ] Add image creation dates so the database can drop anything that has a timestamp before a current subset -- e.g. OpenAI Dall-E only stores images for an hour, so after this, the URLs don't work.
+- [ ] Add tests

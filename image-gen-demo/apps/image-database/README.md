@@ -8,8 +8,8 @@ Table of Contents
   - [Push App to registry](#push-app-to-registry)
     - [Export PostgreSQL environment variables](#export-postgresql-environment-variables)
       - [With DigitalOcean Databases](#with-digitalocean-databases)
-    - [\[Optional\] Testing](#optional-testing)
     - [Push image to your container registry](#push-image-to-your-container-registry)
+    - [\[Optional\] Testing](#optional-testing)
   - [Resources](#resources)
 
 
@@ -62,18 +62,6 @@ export POSTGRES_USERNAME=doadmin
 export POSTGRES_PASSWORD=$(doctl database get $DO_DATABASE_ID -o json | jq '.[0].connection.password')
 ```
 
-### [Optional] Testing
-Test your containerized app works:
-```console
-docker run -p 8080:8080 \
-  -e POSTGRES_HOST=$POSTGRES_HOST \
-  -e POSTGRES_PORT=$POSTGRES_PORT \
-  -e POSTGRES_DATABASE=$POSTGRES_DATABASE \
-  -e POSTGRES_USERNAME=$POSTGRES_USERNAME \
-  -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
-  $IMAGE_DATABASE_IMAGE
-```
-
 ### Push image to your container registry
 ```console
 docker push $IMAGE_DATABASE_IMAGE
@@ -101,6 +89,20 @@ For testing purposes, if you don't feel like waiting on the LoadBalancer (it's a
 ```console
 kubectl -n gen port-forward deployment/image-database 8080:8080
 ```
+
+### [Optional] Testing
+Test your containerized app works:
+```console
+docker run -p 8080:8080 \
+  -e POSTGRES_HOST=$POSTGRES_HOST \
+  -e POSTGRES_PORT=$POSTGRES_PORT \
+  -e POSTGRES_DATABASE=$POSTGRES_DATABASE \
+  -e POSTGRES_USERNAME=$POSTGRES_USERNAME \
+  -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
+  $IMAGE_DATABASE_IMAGE
+```
+
+TODO: use cli to see what is in DB
 
 [**Next steps ->**](../image-gen-store/README.md)
 
