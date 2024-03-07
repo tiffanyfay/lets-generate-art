@@ -10,6 +10,8 @@ Table of Contents
       - [With DigitalOcean Databases](#with-digitalocean-databases)
     - [Push image to your container registry](#push-image-to-your-container-registry)
     - [\[Optional\] Testing](#optional-testing)
+    - [Taking a direct look into the database](#taking-a-direct-look-into-the-database)
+      - [For DigitalOcean](#for-digitalocean)
   - [Resources](#resources)
 
 
@@ -36,16 +38,17 @@ This is only needed if the image isn't automatically pushed up.
 ```shell
 export IMAGE_DATABASE_IMAGE=<image-database:v1>
 ```
-```console
+```shell
 docker push $IMAGE_DATABASE_IMAGE
 ```
 
 ### Export PostgreSQL environment variables
+If you're not using DigitalOcean, replace these with your values.
 ```shell
 export POSTGRES_HOST=<host>
-export POSTGRES_PORT=25060
-export POSTGRES_DATABASE=defaultdb
-export POSTGRES_USERNAME=doadmin
+export POSTGRES_PORT=<5432>
+export POSTGRES_DATABASE=<defaultdb>
+export POSTGRES_USERNAME=<doadmin>
 export POSTGRES_PASSWORD=<password>
 ```
 
@@ -62,37 +65,42 @@ export POSTGRES_USERNAME=doadmin
 export POSTGRES_PASSWORD=$(doctl database get $DO_DATABASE_ID -o json | jq '.[0].connection.password')
 ```
 
+If you for some reason need to drop all your tables in your database (do NOT do this in production), set this:
+```shell
+export DDL_AUTO_SETTING=create-drop
+```
+
 ### Push image to your container registry
-```console
+```shell
 docker push $IMAGE_DATABASE_IMAGE
 ``` 
 
 Verify variables are filled in:
-```console
+```shell
 envsubst < k8s/deployment-image-database.yaml
 ```
 
 *TODO: use secrets for password*
 
 Create deployment and service:
-```console
+```shell
 envsubst < k8s/deployment-image-database.yaml | kubectl apply -f -
 kubectl apply -f k8s/service-image-database.yaml
 ```
 
 Look for loadbalancer service external IP:
-```console
+```shell
 kubectl -n gen get service image-database -w
 ```
 
 For testing purposes, if you don't feel like waiting on the LoadBalancer (it's about 5 minutes on DigitalOcean), you can port-forward:
-```console
+```shell
 kubectl -n gen port-forward deployment/image-database 8080:8080
 ```
 
 ### [Optional] Testing
 Test your containerized app works:
-```console
+```shell
 docker run -p 8080:8080 \
   -e POSTGRES_HOST=$POSTGRES_HOST \
   -e POSTGRES_PORT=$POSTGRES_PORT \
@@ -102,7 +110,26 @@ docker run -p 8080:8080 \
   $IMAGE_DATABASE_IMAGE
 ```
 
-TODO: use cli to see what is in DB
+### Taking a direct look into the database
+TODO: give install instructions for `psql`
+
+#### For DigitalOcean
+```shell
+PGPASSWORD=<postgres-password> psql -U doadmin -h <host> -p 25060 -d defaultdb --set=sslmode=require
+
+```
+Get databases
+```shell
+\l
+```
+Enter database:
+```shell
+\c defaultdb
+```
+Get tables (there should be one called image):
+```shell
+\dt
+```
 
 [**Next steps ->**](../image-gen-store/README.md)
 

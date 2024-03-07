@@ -1,5 +1,7 @@
 # Image Gen Demo
 
+At a very high level, this demo uses generative AI with OpenAI to take in prompts, generates images with Dall-E and places them into a database. It consists of three parts, which are explained later.
+
 **Table of Contents**
 - [Image Gen Demo](#image-gen-demo)
   - [Prerequisites](#prerequisites)
@@ -7,12 +9,11 @@
       - [Set up DigitalOcean Infrastructure](#set-up-digitalocean-infrastructure)
   - [Architecture](#architecture)
   - [Applications](#applications)
-    - [Database](#database)
     - [Launcher](#launcher)
     - [Image Generator and Database store](#image-generator-and-database-store)
+    - [Database](#database)
   - [Things to do](#things-to-do)
   - [TODO](#todo)
-    - [Required](#required)
     - [Nice to have by demo](#nice-to-have-by-demo)
     - [Future work](#future-work)
 
@@ -52,17 +53,14 @@ If you use the Hivenetes k8s boostrapper you can have it create all of these res
 
 ## Applications
 
-
-### Database
-This is a Java application that uses Spring Data and Spring Web to create a database table to store 
-
-
 ### Launcher
 This application takes in prompts for OpenAI and launches jobs for each prompt.
 
-
 ### Image Generator and Database store
+This app uses bash to talk to the OpenAI API to create a Dall-E image. It then stores these prompts and image URLs into a database.
 
+### Database
+This is a Java application that uses Spring Data and Spring Web to create a database table and REST endpoint to make GET and POST requests. It's specifically for a PostgreSQL database.
 
 ## Things to do
 0. Create gen namespace 
@@ -75,14 +73,12 @@ This application takes in prompts for OpenAI and launches jobs for each prompt.
 4. TODO: Observability
 
 ## TODO
-### Required
-- [ ] Use DOCR instead of Docker Hub
-
 ### Nice to have by demo
 - [ ] Display prompts and URLs as images on webpage
 
 ### Future work
 - [ ] Use DigitalOcean spaces to store secrets
+- [ ] Use secrets for database application.properties
 - [ ] Create service account vs using default one
 - [ ] Have a webpage to put prompts into vs running a pod
 - [ ] Add image creation dates so the database can drop anything that has a timestamp before a current subset -- e.g. OpenAI Dall-E only stores images for an hour, so after this, the URLs don't work.
