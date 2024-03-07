@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Check if /etc/secret-volume/open-api-key exists
+if [ ! -f "/etc/secret-volume/open-api-key" ]; then
+  echo "/etc/secret-volume/open-api-key does not exist"
+  exit 1
+fi
+
 OPENAI_API_KEY="$(cat /etc/secret-volume/open-api-key)"
 PROMPT=$1
 
@@ -19,7 +25,7 @@ RESPONSE=$(curl -s https://api.openai.com/v1/images/generations \
       "n": 1,
       "size": "1024x1024"
   }')
-  
+
 echo $RESPONSE
 URL=$(echo $RESPONSE | jq -r '.data[0].url')
 echo "Adding to database:"

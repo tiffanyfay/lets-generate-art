@@ -26,7 +26,7 @@ kubectl apply -f k8s/rolebinding-create-jobs.yaml
 ```
 
 We need to be able to access the service for the database to get the external IP as well.
-```
+```console
 kubectl apply -f k8s/role-get-services.yaml
 kubectl apply -f k8s/rolebinding-get-services.yaml
 ```
@@ -50,12 +50,17 @@ docker push $IMAGE_GEN_STORE_LAUNCHER_IMAGE
 ```
 
 ## Run the app
+Verify `$IMAGE_GEN_STORE_IMAGE` is set:
+```console
+echo $IMAGE_GEN_STORE_IMAGE
+```
+
 ```console
 kubectl -n gen run image-gen-store-launcher \
     --image=$IMAGE_GEN_STORE_LAUNCHER_IMAGE \
     --restart=OnFailure \
     --env IMAGE_GEN_STORE_IMAGE=$IMAGE_GEN_STORE_IMAGE \
-    -- "baby raccoons" "snow in the mountains"
+    -- "a group of baby raccoons" "snow in the mountains with unicorns and rainbows"
 ```
 
 Look at your jobs:
