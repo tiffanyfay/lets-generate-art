@@ -70,7 +70,7 @@ This is a Java application that uses Spring Data and Spring Web to create a data
 1. [Create and run database app](apps/image-database/README.md)
 2. [Create and run image generator and store app](apps/image-gen-store/README.md)
 3. [Create and run launcher app](apps/launcher/README.md)
-4. TODO: Observability
+4. [Observability](observability/README.md)
 
 ## TODO
 ### Nice to have by demo
