@@ -131,6 +131,16 @@ Get tables (there should be one called image):
 \dt
 ```
 
+See columns in image table:
+```shell
+\d image
+```
+
+See values in table:
+```
+SELECT * FROM image;
+```
+
 [**Next steps ->**](../image-gen-store/README.md)
 
 ## Resources
