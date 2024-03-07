@@ -2,23 +2,21 @@
 
 **Table of Contents**
 - [Launcher](#launcher)
-- [Build and push image](#build-and-push-image)
+  - [Trying to run kubectl commands inside of a pod:](#trying-to-run-kubectl-commands-inside-of-a-pod)
   - [RBAC](#rbac)
+  - [Build and push image](#build-and-push-image)
+  - [Run the app](#run-the-app)
   - [Resources](#resources)
     - [RBAC](#rbac-1)
 
 
-# Build and push image
-```shell
-# Change image to your image name depending on your registry
-export IMAGE_GEN_STORE_LAUNCHER_IMAGE=<image-gen-store-launcher:v1>
-docker build -t $IMAGE_GEN_STORE_LAUNCHER_IMAGE .
-docker push $IMAGE_GEN_STORE_LAUNCHER_IMAGE
+## Trying to run kubectl commands inside of a pod:
+```console
+kubectl -n gen run -it tester --rm --image=cgr.dev/chainguard/kubectl -- get jobs
 ```
 
 ## RBAC
-First we need RBAC permissions to be able to create jobs so we will create a role and rolebinding.
-TODO: explain what these do, and also show how we can't get jobs or services prior
+First we need RBAC permissions to be able to create jobs so we will create a role and rolebinding. A role defines what a user/group etc can do with certain resources. And a rolebinding binds this role to a service account. 
 
 TODO: create a service account too vs using the default
 
@@ -27,7 +25,7 @@ kubectl apply -f k8s/role-create-jobs.yaml
 kubectl apply -f k8s/rolebinding-create-jobs.yaml
 ```
 
-TODO: about getting the loadbalancer svc for the db
+We need to be able to access the service for the database to get the external IP as well.
 ```
 kubectl apply -f k8s/role-get-services.yaml
 kubectl apply -f k8s/rolebinding-get-services.yaml
@@ -35,13 +33,24 @@ kubectl apply -f k8s/rolebinding-get-services.yaml
 
 TODO: solve warning `warning: couldn't attach to pod/tester, falling back to streaming logs: unable to upgrade connection: container tester not found in pod tester_gen`
 
-Verify you now have permissions to see jobs in the gen namespace:
+Verify you now have permissions to see jobs in the `gen` namespace:
 ```console
 kubectl -n gen run -it tester --rm --image=cgr.dev/chainguard/kubectl -- get jobs
 ```
 
-Run the app:
-```shell
+## Build and push image
+```console
+# Change image to your image name depending on your registry
+export IMAGE_GEN_STORE_LAUNCHER_IMAGE=<image-gen-store-launcher:v1>
+```
+
+```console
+docker build -t $IMAGE_GEN_STORE_LAUNCHER_IMAGE .
+docker push $IMAGE_GEN_STORE_LAUNCHER_IMAGE
+```
+
+## Run the app
+```console
 kubectl -n gen run image-gen-store-launcher \
     --image=$IMAGE_GEN_STORE_LAUNCHER_IMAGE \
     --restart=OnFailure \
@@ -62,3 +71,4 @@ kubectl -n get jobs --output=jsonpath='{range .items[*]}{.metadata.name}: {.meta
 ## Resources
 ### RBAC
 [Talk I gave](https://www.youtube.com/watch?v=mD-Dng2QbQ0&ab_channel=DevoxxFR)
+[Slides for the talk](https://speakerdeck.com/tiffanyfay/beyond-cluster-admin-getting-started-with-kubernetes-users-and-permissions)
