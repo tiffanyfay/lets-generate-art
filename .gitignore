@@ -1,0 +1,4 @@
+.vscode/
+.idea/
+
+apps/image-gen-store/k8s/my-secret-open-api-key.yaml
