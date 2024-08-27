@@ -33,5 +33,4 @@ public class MainController {
         var map = Map.of("images", this.imageRepository.findAll());
         return new ModelAndView("images", map);
     }
-    
 }

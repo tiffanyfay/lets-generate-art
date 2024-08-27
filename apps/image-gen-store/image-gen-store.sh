@@ -55,10 +55,6 @@ if [ -z "$IP" ]; then
 fi
 
 # Add prompt and URL to database
-curl -s -v -X POST $IP:8080/images \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "'"$PROMPT"'", 
-    "url": "'"$URL"'"
-  }'
+curl -XPOST -dprompt="'"$AI_PROMPT"'" -durl="'"$URL"'" $IP:8080/images
+
 

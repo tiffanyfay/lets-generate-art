@@ -7,15 +7,14 @@ spec:
   template:
     metadata:
       annotations:
-        prompt: $PROMPT
-  template:
+        prompt: $AI_PROMPT
     spec:
       restartPolicy: Never
       containers:
       - name: image-gen-store
         image: $IMAGE_GEN_STORE_IMAGE
         args:
-        - $PROMPT
+        - $AI_PROMPT
         volumeMounts:
         - name: secret-volume
           mountPath: /etc/secret-volume
