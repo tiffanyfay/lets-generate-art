@@ -1,9 +1,12 @@
 package dev.tiffanyfay.imagedatabase;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Collection;
+import java.util.Map;
 
 @RestController // This means that this class is a RestController
-@RequestMapping(path="/images") // This is where you can see and do REST calls for the DB
 public class MainController {
 
     private final ImageRepository imageRepository;
@@ -12,17 +15,23 @@ public class MainController {
         this.imageRepository = imageRepository;
     }
 
-    @PostMapping
-    public String addNewImage (@RequestBody ImageAPI imageAPI) {
-
-        Image image = new Image(imageAPI.prompt(),imageAPI.url());
-        imageRepository.save(image);
-        return "Saved";
+    @PostMapping("/images")
+    void add (@RequestParam String prompt, @RequestParam String url) {
+        imageRepository.save(new ImagePrompt(null, prompt, url));
     }
 
-    @GetMapping
-    public Iterable<Image> getAllImages() {
-        // This returns JSON with the images
-        return imageRepository.findAll();
+    @ResponseBody
+    @GetMapping("/images")
+    Collection<ImagePrompt> all() {
+        return this.imageRepository.findAll();
     }
+
+    // model-view-controller
+    @GetMapping({"/", "/images.html"})
+    ModelAndView allHtml() {
+        // src/main/resources/templates/ + STRING + .html
+        var map = Map.of("images", this.imageRepository.findAll());
+        return new ModelAndView("images", map);
+    }
+    
 }

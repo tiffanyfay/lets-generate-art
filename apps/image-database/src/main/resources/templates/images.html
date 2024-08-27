@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>
+        Prompts
+    </title>
+
+</head>
+<body>
+
+
+<div th:each="image : ${images}">
+
+    <span th:text="${ image.id  }"></span>
+    <span th:text="${ image.prompt  }"></span>
+    <br>
+    <img width="500" th:src="${image.url}"/>
+
+
+</div>
+
+
+</body>
+</html>
