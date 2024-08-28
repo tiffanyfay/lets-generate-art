@@ -11,14 +11,14 @@ spec:
     spec:
       restartPolicy: Never
       containers:
-      - name: image-gen-store
-        image: $IMAGE_GEN_STORE_IMAGE
-        args:
-        - $AI_PROMPT
-        volumeMounts:
-        - name: secret-volume
-          mountPath: /etc/secret-volume
-      volumes:
-      - name: secret-volume
-        secret:
-          secretName: open-api-key
+        - name: image-gen-store
+          image: $IMAGE_GEN_STORE_IMAGE
+          args:
+            - $AI_PROMPT
+          env:
+            - name: DB_SERVICE_URL
+              value: $DB_SERVICE_URL
+            - name: AI_PROMPT
+              value: $AI_PROMPT
+            - name: OPENAI_API_KEY
+              value: $OPENAI_API_KEY
