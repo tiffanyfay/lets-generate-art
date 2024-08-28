@@ -7,6 +7,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestClient;
@@ -21,19 +22,26 @@ public class ImagegenstoreApplication {
 	}
 
 	@Bean
-	RestClient restClient(RestClient.Builder builder) {
-		return builder.build();
+	RestClient restClient(RestClient.Builder builder,
+						  @Value("${DB_SERVICE_URL:http://localhost:8080/images}") String dbServiceUrl) {
+		return builder
+				.baseUrl(dbServiceUrl)
+				.build();
 	}
 
 	@Bean
-	ApplicationRunner runner (RestClient rc, ImageModel imageModel, @Value("${AI_PROMPT}") String prompt, @Value("${DB_SERVICE_URL:http://localhost:8080/images}") String dbServiceUrl) {
+	ApplicationRunner runner (Environment env, RestClient rc, ImageModel imageModel, @Value("${AI_PROMPT}") String prompt  ) {
 		return args -> {
-			System.out.println("Prompt: " + prompt);
+//			System.out.println("Environment: " + env.getProperty("spring.ai.openai.api-key"));
+			System.out.println("Environment: " + env.getProperty("AI_PROMPT"));
+			System.out.println("Environment: " + env.getProperty("DB_SERVICE_URL"));
+
 			var response = imageModel.call(new ImagePrompt(prompt));
 			var url = response.getResult().getOutput().getUrl();
 			System.out.println("URL: " + url);
 
-			var bodilessEntity = rc.post().uri(dbServiceUrl+"?prompt={prompt}&url={url}",Map.of("prompt", prompt, "url", url))
+			var bodilessEntity = rc.post()
+					.uri( uriBuilder -> uriBuilder  .queryParam("prompt", prompt).queryParam("url", url).build())
 					.retrieve().toBodilessEntity();
 			Assert.state(bodilessEntity.getStatusCode().is2xxSuccessful(), "Failed to post to database");
 		};
