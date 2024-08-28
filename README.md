@@ -40,6 +40,9 @@ We will need a:
 - PostgreSQL database
 
 #### Set up DigitalOcean Infrastructure
+
+For new accounts, you can use the [DigitalOcean $200 credit](to get started.
+![img_2.png](img_2.png)
 If you use the Hivenetes k8s boostrapper you can have it create all of these resources for you:
 ![](static/digital-ocean-infra.png)
 

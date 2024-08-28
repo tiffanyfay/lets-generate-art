@@ -64,7 +64,7 @@ kubectl -n gen run image-gen-store-launcher \
     --image=$IMAGE_GEN_STORE_LAUNCHER_IMAGE \
     --restart=OnFailure \
     --env IMAGE_GEN_STORE_IMAGE=$IMAGE_GEN_STORE_IMAGE \
-    -- "a raccoon with the Java Spring logo" "cute otters"
+    -- "Octopus with the Java Spring logo" "Underwater sea creatures with a green, purple, blue, orange theme"
 ```
 
 Look at your jobs:
