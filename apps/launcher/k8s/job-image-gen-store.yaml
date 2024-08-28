@@ -21,4 +21,7 @@ spec:
             - name: AI_PROMPT
               value: $AI_PROMPT
             - name: OPENAI_API_KEY
-              value: $OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: openai-api-key
+                  key: key
