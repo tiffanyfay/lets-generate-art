@@ -14,32 +14,16 @@ Table of Contents
       - [For DigitalOcean](#for-digitalocean)
   - [Resources](#resources)
 
-
+  
 ## Building image-database app
+```shell
+cd apps/image-database
+```
+
 First, ensure you're logged into the Container Registry you expect to be in.
-
-### Cloud Native Buildpacks
-Build and push image:
-```console
-# Replace image with your image name
-./mvnw spring-boot:build-image \
-    -Dspring-boot.build-image.imageName=<image-database:v1>
-```
-
-### JIB
-```console
-./mvnw compile com.google.cloud.tools:jib-maven-plugin:3.3.2:dockerBuild \
-    -Dimage=<image-database:v1>
-```
-
-## Push App to registry
-This is only needed if the image isn't automatically pushed up.
 
 ```shell
 export IMAGE_DATABASE_IMAGE=<image-database:v1>
-```
-```shell
-docker push $IMAGE_DATABASE_IMAGE
 ```
 
 ### Export PostgreSQL environment variables
@@ -55,25 +39,38 @@ export POSTGRES_PASSWORD=<password>
 #### With DigitalOcean Databases
 ```shell
 export DO_DATABASE_ID=<id-goes-here> 
+```
+```shell
 echo $DO_DATABASE_ID
-
-export POSTGRES_HOST=$(doctl database get $DO_DATABASE_ID -o json | jq '.[0].connection.host') 
+export POSTGRES_HOST=$(doctl database get $DO_DATABASE_ID -o json | jq -r '.[0].connection.host') 
 echo $POSTGRES_HOST
 export POSTGRES_PORT=25060
 export POSTGRES_DATABASE=defaultdb
 export POSTGRES_USERNAME=doadmin
-export POSTGRES_PASSWORD=$(doctl database get $DO_DATABASE_ID -o json | jq '.[0].connection.password')
+export POSTGRES_PASSWORD=$(doctl database get $DO_DATABASE_ID -o json | jq -r '.[0].connection.password')
 ```
 
-If you for some reason need to drop all your tables in your database (do NOT do this in production), set this:
-```shell
-export DDL_AUTO_SETTING=create-drop
+### Cloud Native Buildpacks
+Build and push image:
+```console
+# Replace image with your image name
+./mvnw spring-boot:build-image \
+    -Dspring-boot.build-image.imageName=$IMAGE_DATABASE_IMAGE \
+    -DskipTests
 ```
 
-### Push image to your container registry
+### JIB
+```console
+./mvnw compile com.google.cloud.tools:jib-maven-plugin:3.3.2:dockerBuild \
+    -Dimage=<image-database:v1>
+```
+
+## Push App to registry
+This is only needed if the image isn't automatically pushed up.
+
 ```shell
 docker push $IMAGE_DATABASE_IMAGE
-``` 
+```
 
 Verify variables are filled in:
 ```shell
@@ -115,30 +112,21 @@ TODO: give install instructions for `psql`
 
 #### For DigitalOcean
 ```shell
-PGPASSWORD=<postgres-password> psql -U doadmin -h <host> -p 25060 -d defaultdb --set=sslmode=require
+PGPASSWORD=$POSTGRES_PASSWORD psql -U doadmin -h $POSTGRES_HOST -p 25060 -d defaultdb --set=sslmode=require
 
-```
-Get databases
-```shell
-\l
-```
-Enter database:
-```shell
-\c defaultdb
-```
-Get tables (there should be one called image):
+Get tables (there should be one called image_prompt):
 ```shell
 \dt
 ```
 
-See columns in image table:
+See columns in image_prompt table:
 ```shell
-\d image
+\d image_prompt
 ```
 
 See values in table:
 ```
-SELECT * FROM image;
+SELECT * FROM image_prompt;
 ```
 
 [**Next steps ->**](../image-gen-store/README.md)

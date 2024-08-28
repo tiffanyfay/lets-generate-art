@@ -10,6 +10,10 @@
     - [RBAC](#rbac-1)
 
 
+```shell
+cd ../launcher
+```
+
 ## Trying to run kubectl commands inside of a pod:
 ```console
 kubectl -n gen run -it tester --rm --image=cgr.dev/chainguard/kubectl -- get jobs
@@ -60,7 +64,7 @@ kubectl -n gen run image-gen-store-launcher \
     --image=$IMAGE_GEN_STORE_LAUNCHER_IMAGE \
     --restart=OnFailure \
     --env IMAGE_GEN_STORE_IMAGE=$IMAGE_GEN_STORE_IMAGE \
-    -- "a group of baby raccoons" "snow in the mountains with unicorns and rainbows"
+    -- "a raccoon with the Java Spring logo" "cute otters"
 ```
 
 Look at your jobs:
@@ -70,7 +74,7 @@ kubectl -n gen get jobs
 
 Check your annotations happened:
 ```console
-kubectl -n get jobs --output=jsonpath='{range .items[*]}{.metadata.name}: {.metadata.annotations}{"\n"}{end}'
+kubectl -n gen get jobs --output=jsonpath='{range .items[*]}{.metadata.name}: {.metadata.annotations}{"\n"}{end}'
 ```
 
 ## Resources
