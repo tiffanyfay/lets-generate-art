@@ -29,11 +29,11 @@ export IMAGE_DATABASE_IMAGE=<image-database:v1>
 ### Export PostgreSQL environment variables
 If you're not using DigitalOcean, replace these with your values.
 ```shell
-export POSTGRES_HOST=<host>
-export POSTGRES_PORT=<5432>
-export POSTGRES_DATABASE=<defaultdb>
-export POSTGRES_USERNAME=<doadmin>
-export POSTGRES_PASSWORD=<password>
+export CLICKHOUSE_HOST=<host>
+export CLICKHOUSE_PORT=<5432>
+export CLICKHOUSE_DATABASE=<defaultdb>
+export CLICKHOUSE_USERNAME=<doadmin>
+export CLICKHOUSE_PASSWORD=<password>
 ```
 
 #### With DigitalOcean Databases
@@ -41,13 +41,22 @@ export POSTGRES_PASSWORD=<password>
 export DO_DATABASE_ID=<id-goes-here> 
 ```
 ```shell
-echo $DO_DATABASE_ID
-export POSTGRES_HOST=$(doctl database get $DO_DATABASE_ID -o json | jq -r '.[0].connection.host') 
+export POSTGRES_HOST=$(doctl database get $DO_DATABASE_ID -o json | jq -r '.[0].connection.host')
 echo $POSTGRES_HOST
 export POSTGRES_PORT=25060
 export POSTGRES_DATABASE=defaultdb
 export POSTGRES_USERNAME=doadmin
 export POSTGRES_PASSWORD=$(doctl database get $DO_DATABASE_ID -o json | jq -r '.[0].connection.password')
+```
+#### With ClickHouse Cloud
+> Note: This requires making the database mydb
+```shell
+export CLICKHOUSE_HOST=<clickhouse-host> 
+echo $CLICKHOUSE_HOST
+export CLICKHOUSE_PORT=8443
+export CLICKHOUSE_DATABASE=mydb
+export CLICKHOUSE_USERNAME=<default>
+export CLICKHOUSE_PASSWORD=<password>
 ```
 
 ### Cloud Native Buildpacks
@@ -99,11 +108,11 @@ kubectl -n gen port-forward deployment/image-database 8080:8080
 Test your containerized app works:
 ```shell
 docker run -p 8080:8080 \
-  -e POSTGRES_HOST=$POSTGRES_HOST \
-  -e POSTGRES_PORT=$POSTGRES_PORT \
-  -e POSTGRES_DATABASE=$POSTGRES_DATABASE \
-  -e POSTGRES_USERNAME=$POSTGRES_USERNAME \
-  -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
+  -e CLICKHOUSE_HOST=$CLICKHOUSE_HOST \
+  -e CLICKHOUSE_PORT=$CLICKHOUSE_PORT \
+  -e CLICKHOUSE_DATABASE=$CLICKHOUSE_DATABASE \
+  -e CLICKHOUSE_USERNAME=$CLICKHOUSE_USERNAME \
+  -e CLICKHOUSE_PASSWORD=$CLICKHOUSE_PASSWORD \
   $IMAGE_DATABASE_IMAGE
 ```
 
@@ -112,7 +121,7 @@ TODO: give install instructions for `psql`
 
 #### For DigitalOcean
 ```shell
-PGPASSWORD=$POSTGRES_PASSWORD psql -U doadmin -h $POSTGRES_HOST -p 25060 -d defaultdb --set=sslmode=require
+PGPASSWORD=$CLICKHOUSE_PASSWORD psql -U doadmin -h $CLICKHOUSE_HOST -p 25060 -d defaultdb --set=sslmode=require
 
 Get tables (there should be one called image_prompt):
 ```shell

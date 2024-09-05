@@ -19,14 +19,14 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            - name: POSTGRES_HOST
-              value: $POSTGRES_HOST
-            - name: POSTGRES_PORT
-              value: "$POSTGRES_PORT"
-            - name: POSTGRES_DATABASE
-              value: $POSTGRES_DATABASE
-            - name: POSTGRES_USERNAME
-              value: $POSTGRES_USERNAME
-            - name: POSTGRES_PASSWORD
-              value: $POSTGRES_PASSWORD
+            - name: CLICKHOUSE_HOST
+              value: $CLICKHOUSE_HOST
+            - name: CLICKHOUSE_PORT
+              value: "$CLICKHOUSE_PORT"
+            - name: CLICKHOUSE_DATABASE
+              value: $CLICKHOUSE_DATABASE
+            - name: CLICKHOUSE_USERNAME
+              value: $CLICKHOUSE_USERNAME
+            - name: CLICKHOUSE_PASSWORD
+              value: $CLICKHOUSE_PASSWORD
 # TODO: switch password etc to secrets

@@ -12,8 +12,9 @@
 
 <div th:each="image : ${images}">
 
-    <span th:text="${ image.id  }"></span>
-    <span th:text="${ image.prompt  }"></span>
+    <span th:text="${image.imageId}"></span>
+    <br>
+    <span th:text="${image.prompt}"></span>
     <br>
     <img width="500" th:src="${image.url}"/>
 

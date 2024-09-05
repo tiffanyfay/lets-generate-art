@@ -2,8 +2,8 @@ services:
   postgres:
     image: 'postgres:latest'
     environment:
-      - 'POSTGRES_DB=mydb'
-      - 'POSTGRES_PASSWORD=password'
-      - 'POSTGRES_USER=postgres'
+      - 'CLICKHOUSE_DB=mydb'
+      - 'CLICKHOUSE_PASSWORD=password'
+      - 'CLICKHOUSE_USER=postgres'
     ports:
       - '5432:5432'
