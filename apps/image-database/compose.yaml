@@ -1,9 +1,29 @@
 services:
-  postgres:
-    image: 'postgres:latest'
+  clickhouse:
+    image: clickhouse/clickhouse-server
+    ports:
+      - "18123:8123"
+      - "19000:9000"
     environment:
       - 'CLICKHOUSE_DB=mydb'
+      - 'CLICKHOUSE_USER=default'
       - 'CLICKHOUSE_PASSWORD=password'
-      - 'CLICKHOUSE_USER=postgres'
-    ports:
-      - '5432:5432'
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+
+# Use this to get local data and logs -- compose/data and
+# compose/logs must exist in the same directory as compose.yaml
+#    volumes:
+#      - ./compose/data/:/var/lib/clickhouse/
+#      - ./compose/logs/:/var/log/clickhouse-server/
+
+      # Use this directory for db init scripts
+      # - ./init/:/docker-entrypoint-initdb.d/
+
+      # Server config files
+      # - ./config/server/:/etc/clickhouse-server/config.d/
+      
+      # User config files
+      # - ./config/user/:/etc/clickhouse-server/users.d/

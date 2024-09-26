@@ -1,3 +1,4 @@
+CREATE DATABASE IF NOT EXISTS mydb;
 create table if not exists image_prompt
 (
     prompt   text  not null,
