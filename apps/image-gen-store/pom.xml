@@ -29,6 +29,8 @@
 	<properties>
 		<java.version>21</java.version>
 		<spring-ai.version>1.0.0-M1</spring-ai.version>
+		<sonar.organization>tiffanyfay</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 	<dependencies>
 		<dependency>
