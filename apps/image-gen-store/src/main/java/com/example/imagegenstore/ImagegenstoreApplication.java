@@ -8,11 +8,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestClient;
-
-import java.util.Map;
 
 @SpringBootApplication
 public class ImagegenstoreApplication {
@@ -52,4 +49,4 @@ public class ImagegenstoreApplication {
 
 // 1. take in a prompt
 // 2. call OpenAI to get image/url
-// 3. "post" to curl -XPOST -dprompt="cute raccoon242"  -durl="https://i.imgur.com/FLRxq2L.png"  http://localhost:8080/images
+// 3. "post" to curl -XPOST -dprompt="cute raccoon"  -durl="https://i.imgur.com/FLRxq2L.png"  http://localhost:8080/images
