@@ -48,6 +48,10 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- <dependency>
+			<groupId>io.opentelemetry.instrumentation</groupId>
+			<artifactId>opentelemetry-spring-boot-starter</artifactId>
+		</dependency> -->
 
 	</dependencies>
 	<dependencyManagement>
@@ -59,8 +63,16 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<!-- <dependency>
+				<groupId>io.opentelemetry.instrumentation</groupId>
+				<artifactId>opentelemetry-instrumentation-bom</artifactId>
+				<version>2.13.3</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency> -->
 		</dependencies>
 	</dependencyManagement>
+
 
 	<build>
 		<plugins>
@@ -71,6 +83,18 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<image>
+						<buildpacks>
+							<buildpack>paketo-buildpacks/java</buildpack>
+							<buildpack>gcr.io/paketo-buildpacks/opentelemetry</buildpack>
+						</buildpacks>
+						<env>
+							<BP_OPENTELEMETRY_ENABLED>true</BP_OPENTELEMETRY_ENABLED>
+						</env>
+						<builder>paketobuildpacks/builder-noble-java-tiny</builder>
+					</image>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

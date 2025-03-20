@@ -2,3 +2,5 @@
 .idea/
 
 apps/image-gen-store/k8s/my-secret-open-api-key.yaml
+observability/tempo/config.alloy
+apps/*/target/
