@@ -35,5 +35,7 @@ spec:
               value: "true"
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: http://lgtm:4318
+            - name: OTEL_SERVICE_NAME
+              value: image-database
 
 # TODO: switch password etc to secrets
