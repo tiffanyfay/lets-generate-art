@@ -10,9 +10,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestClient;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
 
 @SpringBootApplication
 public class ImagegenstoreApplication {
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(ImagegenstoreApplication.class, args);
@@ -27,14 +30,22 @@ public class ImagegenstoreApplication {
 	}
 
 	@Bean
-	ApplicationRunner runner (Environment env, RestClient rc, ImageModel imageModel, @Value("${AI_PROMPT}") String prompt  ) {
+	ApplicationRunner runner (Environment env, RestClient rc, ImageModel imageModel, @Value("${AI_PROMPT}") String prompt, Tracer tracer ) {
 		return args -> {
 //			System.out.println("Environment: " + env.getProperty("spring.ai.openai.api-key"));
 			System.out.println("Environment: " + env.getProperty("AI_PROMPT"));
 			System.out.println("Environment: " + env.getProperty("DB_SERVICE_URL"));
+			
+			Span span = tracer.spanBuilder("prompt")
+					.setAttribute("prompt", prompt)
+					.startSpan();
 
 			var response = imageModel.call(new ImagePrompt(prompt));
 			var url = response.getResult().getOutput().getUrl();
+
+			span.setAttribute("url", url);
+
+			span.end();
 			System.out.println("URL: " + url);
 
 			var bodilessEntity = rc.post()
