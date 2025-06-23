@@ -46,6 +46,12 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+    		<groupId>io.arconia</groupId>
+    		<artifactId>arconia-opentelemetry-spring-boot-starter</artifactId>
+		</dependency>
+
+
 		<!-- <dependency>
 			<groupId>io.opentelemetry.instrumentation</groupId>
 			<artifactId>opentelemetry-spring-boot-starter</artifactId>
@@ -68,6 +74,14 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency> -->
+			<dependency>
+				<groupId>io.arconia</groupId>
+				<artifactId>arconia-bom</artifactId>
+				<version>0.12.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+        	</dependency>
+			
 		</dependencies>
 	</dependencyManagement>
 
@@ -76,7 +90,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
+				<!-- <configuration>
 					<image>
 						<buildpacks>
 							<buildpack>paketo-buildpacks/java</buildpack>
@@ -87,7 +101,7 @@
 						</env>
 						<builder>paketobuildpacks/builder-noble-java-tiny</builder>
 					</image>
-				</configuration>
+				</configuration> -->
 			</plugin>
 		</plugins>
 	</build>
