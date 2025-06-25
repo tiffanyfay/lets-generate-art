@@ -23,7 +23,7 @@ for prompt in "$@"; do
       fi
     fi
 
-    export DB_SERVICE_URL="http://$IP:8080/images"
+    export DB_SERVICE_URL="http://$IP:8080/"
     echo "Database service URL: $DB_SERVICE_URL"
 
     # TODO: check if DB_SERVICE_URL is reachable
