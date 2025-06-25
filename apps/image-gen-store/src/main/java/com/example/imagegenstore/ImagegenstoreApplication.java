@@ -36,25 +36,22 @@ public class ImagegenstoreApplication {
 			System.out.println("Environment: " + env.getProperty("AI_PROMPT"));
 			System.out.println("Environment: " + env.getProperty("DB_SERVICE_URL"));
 			
-			Span span = tracer.spanBuilder("image-client")
+			Span span = tracer.spanBuilder("prompt")
 					.setAttribute("prompt", prompt)
 					.startSpan();
 
-			try (var scope = span.makeCurrent()) {
-				var response = imageModel.call(new ImagePrompt(prompt));
-				var url = response.getResult().getOutput().getUrl();
+			var response = imageModel.call(new ImagePrompt(prompt));
+			var url = response.getResult().getOutput().getUrl();
 
-				span.setAttribute("url", url);
+			span.setAttribute("url", url);
 
-				System.out.println("URL: " + url);
+			span.end();
+			System.out.println("URL: " + url);
 
-				var bodilessEntity = rc.post()
-						.uri( uriBuilder -> uriBuilder  .queryParam("prompt", prompt).queryParam("url", url).build())
-						.retrieve().toBodilessEntity();
-				Assert.state(bodilessEntity.getStatusCode().is2xxSuccessful(), "Failed to post to database");
-			} finally {
-				span.end();
-			}
+			var bodilessEntity = rc.post()
+					.uri( uriBuilder -> uriBuilder  .queryParam("prompt", prompt).queryParam("url", url).build())
+					.retrieve().toBodilessEntity();
+			Assert.state(bodilessEntity.getStatusCode().is2xxSuccessful(), "Failed to post to database");
 		};
 	}
 
